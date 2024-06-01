@@ -1,6 +1,12 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
+loom {
+    forge {
+        mixinConfig "norealmsbutton-common.mixins.json"
+        mixinConfig "norealmsbutton.mixins.json"
+    }
+}
 architectury {
     platformSetupLoomIde()
     forge()
@@ -8,7 +14,7 @@ architectury {
 
 configurations {
     common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
@@ -33,11 +39,11 @@ shadowJar {
     exclude "fabric.mod.json"
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set("dev-shadow")
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
-    inputFile.set shadowJar.archiveFile
+    inputFile.set(shadowJar.archiveFile)
     dependsOn shadowJar
     archiveClassifier.set(null)
 }
