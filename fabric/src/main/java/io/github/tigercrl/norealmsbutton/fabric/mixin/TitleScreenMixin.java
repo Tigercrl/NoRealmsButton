@@ -18,7 +18,7 @@ public class TitleScreenMixin {
         if (guiEventListener instanceof Button b && ((AbstractWidgetAccessor) b).getMessage().equals(Component.translatable("menu.online"))) {
             b.setAlpha(0);
             b.visible = false;
-            b.setY(b.getY() - 35);
+            b.setY(b.getY() - 25);
             b.setFocused(false);
         }
         return ((ScreenInvoker) instance).invokeAddRenderableWidget(guiEventListener);
@@ -27,7 +27,7 @@ public class TitleScreenMixin {
     @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/TitleScreen;addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"))
     public GuiEventListener fixPos(TitleScreen instance, GuiEventListener guiEventListener) {
         if (guiEventListener instanceof Button b && !(guiEventListener instanceof PlainTextButton))
-            b.setY(b.getY() - 35);
+            b.setY(b.getY() - 25);
         return ((ScreenInvoker) instance).invokeAddRenderableWidget(guiEventListener);
     }
 }
