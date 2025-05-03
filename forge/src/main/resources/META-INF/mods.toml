@@ -23,7 +23,7 @@ version="${version}" #mandatory
 # A display name for the mod
 displayName="NoRealmsButton" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="https://api.modrinth.com/updates/norealmsbutton/forge_updates.json" #optional
+updateJSONURL="https://api.modrinth.com/updates/no-realms-button/forge_updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://modrinth.com/mod/no-realms-button"
 # A file name (in the root of the mod JAR) containing a logo for display
