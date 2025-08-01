@@ -2,10 +2,12 @@
   "required": true,
   "minVersion": "0.8",
   "package": "io.github.tigercrl.norealmsbutton.forge.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
   "client": [
+    "ScreenAccessor",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
