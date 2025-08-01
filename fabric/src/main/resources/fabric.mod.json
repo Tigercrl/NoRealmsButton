@@ -15,6 +15,9 @@
   "entrypoints": {
     "main": [
       "io.github.tigercrl.norealmsbutton.fabric.NoRealmsButtonFabric"
+    ],
+    "client": [
+      "io.github.tigercrl.norealmsbutton.fabric.NoRealmsButtonFabricClient"
     ]
   },
   "mixins": [
@@ -23,6 +26,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
     "minecraft": "~1.20-1.20.6"
   }
 }
