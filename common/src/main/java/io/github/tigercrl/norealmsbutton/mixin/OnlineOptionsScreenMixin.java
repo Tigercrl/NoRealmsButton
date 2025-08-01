@@ -13,6 +13,7 @@ import java.util.List;
 
 @Mixin(OnlineOptionsScreen.class)
 public abstract class OnlineOptionsScreenMixin {
+    // remove realms settings
     @WrapOperation(method = "options", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private static <E> boolean removeRealmsOption(List<E> instance, E e, Operation<Boolean> original, @Local(argsOnly = true) Options options) {
         if (e instanceof OptionInstance<?> optionInstance && optionInstance.equals(options.realmsNotifications())) {
