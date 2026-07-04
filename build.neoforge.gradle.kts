@@ -24,7 +24,7 @@ tasks.named<ProcessResources>("processResources") {
     }
 }
 
-version = "$modVersion+${property("deps.minecraft")}-neoforge"
+version = "$modVersion+$minVersion-neoforge"
 base.archivesName = property("mod.id") as String
 
 repositories {
@@ -102,7 +102,7 @@ publishMods {
 
     type = STABLE
     displayName = "[NeoForge] ${property("mod.name")} $modVersion"
-    version = "$modVersion+${property("deps.minecraft")}-neoforge"
+    version = "$modVersion+$minVersion-neoforge"
     changelog = provider { rootProject.file("CHANGELOG.md").readText() }
     modLoaders.add("neoforge")
 

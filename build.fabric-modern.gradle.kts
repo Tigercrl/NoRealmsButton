@@ -24,7 +24,7 @@ tasks.named<ProcessResources>("processResources") {
     }
 }
 
-version = "$modVersion+${property("deps.minecraft")}-fabric"
+version = "$modVersion+$minVersion-fabric"
 base.archivesName = property("mod.id") as String
 
 //loom {
@@ -76,7 +76,7 @@ publishMods {
 
     type = STABLE
     displayName = "[Fabric] ${property("mod.name")} $modVersion"
-    version = "$modVersion+${property("deps.minecraft")}-fabric"
+    version = "$modVersion+$minVersion-fabric"
     changelog = provider { rootProject.file("CHANGELOG.md").readText() }
     modLoaders.add("fabric")
 
