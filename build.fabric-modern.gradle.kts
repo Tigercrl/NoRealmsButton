@@ -1,0 +1,89 @@
+plugins {
+    id("net.fabricmc.fabric-loom")
+    id("me.modmuss50.mod-publish-plugin")
+}
+
+val modVersion = property("mod.version") as String
+val minVersion = property("deps.minecraft.minVersion") as String
+val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as String?
+val supportedVersions = listOf(minVersion, modVersion) +
+        (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
+
+tasks.named<ProcessResources>("processResources") {
+    fun prop(name: String) = project.property(name) as String
+
+    val props = HashMap<String, String>().apply {
+        this["id"] = prop("mod.id")
+        this["name"] = prop("mod.name")
+        this["version"] = modVersion
+        this["minecraft_min_version"] = minVersion
+    }
+
+    filesMatching(listOf("fabric.mod.json")) {
+        expand(props)
+    }
+}
+
+version = "$modVersion+${property("deps.minecraft")}-fabric"
+base.archivesName = property("mod.id") as String
+
+//loom {
+//    accessWidenerPath = rootProject.file("src/main/resources/${property("mod.id")}.accesswidener")
+//}
+
+repositories {
+    mavenLocal()
+    maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+}
+
+dependencies {
+    minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
+    implementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+    implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
+
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
+}
+
+fabricApi {
+    configureDataGeneration {
+        outputDirectory = file("$rootDir/src/main/generated")
+        client = true
+    }
+}
+
+tasks {
+    processResources {
+        exclude("**/neoforge.mods.toml", "**/mods.toml", "**/accesstransformer.cfg", "**/pack.mcmeta")
+    }
+
+    register<Copy>("buildAndCollect") {
+        group = "build"
+        from(jar.map { it.archiveFile })
+        into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
+        dependsOn("build")
+    }
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+publishMods {
+    file = tasks.jar.map { it.archiveFile.get() }
+    additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
+
+    type = STABLE
+    displayName = "[Fabric] ${property("mod.name")} $modVersion"
+    version = "$modVersion+${property("deps.minecraft")}-fabric"
+    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
+    modLoaders.add("fabric")
+
+    modrinth {
+        projectId = property("publish.modrinth") as String
+        accessToken = env.MODRINTH_API_KEY.orNull()
+        minecraftVersions.addAll(supportedVersions)
+        requires("fabric-api")
+    }
+}

@@ -1,0 +1,26 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "MIT"
+
+[[mods]]
+modId = "${id}"
+displayName = "${name}"
+version = "${version}"
+displayURL = "https://modrinth.com/mod/no-realms-button"
+logoFile = "assets/${id}/icon.png"
+authors = "Tigercrl"
+description = '''Removes the Minecraft Realms button from the main menu'''
+
+[[dependencies.${id}]]
+modId = "forge"
+mandatory = true
+versionRange = "[1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${id}]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${minecraft_min_version},)"
+ordering = "NONE"
+side = "BOTH"

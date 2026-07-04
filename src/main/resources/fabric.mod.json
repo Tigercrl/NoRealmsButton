@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "name": "${name}",
+  "version": "${version}",
+  "authors": [
+    "Tigercrl"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/no-realms-button",
+    "sources": "https://github.com/Tigercrl/no-realms-button",
+    "issues": "https://github.com/Tigercrl/no-realms-button/issues"
+  },
+  "description": "Removes the Minecraft Realms button from the main menu",
+  "icon": "assets/${id}/icon.png",
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "top.tigercrl.norealmsbutton.loaders.fabric.FabricClientEntrypoint"
+    ]
+  },
+  "mixins": [
+    "${id}.mixins.json"
+  ],
+  "depends": {
+    "fabric-api": "*",
+    "minecraft": ">=${minecraft_min_version}"
+  }
+}
