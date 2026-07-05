@@ -4,9 +4,10 @@ plugins {
 }
 
 val modVersion = property("mod.version") as String
+val mcVersion = property("deps.minecraft") as String
 val minVersion = property("deps.minecraft.minVersion") as String
 val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as String?
-val supportedVersions = listOf(minVersion, modVersion) +
+val supportedVersions = setOf(minVersion, mcVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
 version = "$modVersion+$minVersion-fabric"
@@ -22,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
+    minecraft("com.mojang:minecraft:$mcVersion")
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
 
