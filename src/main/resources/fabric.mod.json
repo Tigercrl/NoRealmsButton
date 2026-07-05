@@ -12,7 +12,7 @@
     "issues": "https://github.com/Tigercrl/no-realms-button/issues"
   },
   "description": "Removes the Minecraft Realms button from the main menu",
-  "icon": "assets/${id}/icon.png",
+  "icon": "icon.png",
   "license": "MIT",
   "environment": "*",
   "entrypoints": {

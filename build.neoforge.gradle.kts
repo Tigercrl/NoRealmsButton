@@ -9,21 +9,6 @@ val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as
 val supportedVersions = listOf(minVersion, modVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
-tasks.named<ProcessResources>("processResources") {
-    fun prop(name: String) = project.property(name) as String
-
-    val props = HashMap<String, String>().apply {
-        this["id"] = prop("mod.id")
-        this["name"] = prop("mod.name")
-        this["version"] = modVersion
-        this["minecraft_min_version"] = minVersion
-    }
-
-    filesMatching(listOf("META-INF/neoforge.mods.toml")) {
-        expand(props)
-    }
-}
-
 version = "$modVersion+$minVersion-neoforge"
 base.archivesName = property("mod.id") as String
 
@@ -66,6 +51,19 @@ neoForge {
 
 tasks {
     processResources {
+        fun prop(name: String) = project.property(name) as String
+
+        val props = HashMap<String, String>().apply {
+            this["id"] = prop("mod.id")
+            this["name"] = prop("mod.name")
+            this["version"] = modVersion
+            this["minecraft_min_version"] = minVersion
+        }
+
+        filesMatching(listOf("META-INF/neoforge.mods.toml")) {
+            expand(props)
+        }
+
         exclude("**/fabric.mod.json", "**/*.accesswidener", "**/mods.toml", "**/pack.mcmeta")
     }
 

@@ -7,7 +7,7 @@ modId = "${id}"
 displayName = "${name}"
 version = "${version}"
 displayURL = "https://modrinth.com/mod/no-realms-button"
-logoFile = "assets/${id}/icon.png"
+logoFile = "icon.png"
 authors = "Tigercrl"
 description = '''Removes the Minecraft Realms button from the main menu'''
 

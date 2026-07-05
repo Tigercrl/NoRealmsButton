@@ -1,7 +1,5 @@
 package top.tigercrl.norealmsbutton.mixin;
 
-import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
-
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,11 +9,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//? >=1.19 {
+import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
+//? } else
+//import net.minecraft.client.gui.screens.Screen;
 
 //? forge || neoforge
 //import top.tigercrl.norealmsbutton.NoRealmsButton;
 //? forge {
 /*import net.minecraft.client.gui.components.Button;
+//~ if >=1.19 'TranslatableComponent' -> 'Component'
 import net.minecraft.network.chat.Component;
 *///? }
 
@@ -24,6 +27,7 @@ import net.minecraft.network.chat.Component;
 public abstract class TitleScreenMixin {
     @Shadow
     @Nullable
+    //~ if >=1.19 'Screen ' -> 'RealmsNotificationsScreen '
     private RealmsNotificationsScreen realmsNotificationsScreen;
 
     // remove realms screen
@@ -55,6 +59,7 @@ public abstract class TitleScreenMixin {
 
         //? forge {
         /^accessor.getChildren().forEach(w -> {
+            //~ if >=1.19 'new TranslatableComponent' -> 'Component.translatable'
             if (w instanceof Button b && b.getMessage().equals(Component.translatable("fml.menu.mods"))) {
                 b.setWidth(200); // widen mods button
             }

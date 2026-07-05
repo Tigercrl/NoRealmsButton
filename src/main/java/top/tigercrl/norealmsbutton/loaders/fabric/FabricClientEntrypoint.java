@@ -13,13 +13,13 @@ import top.tigercrl.norealmsbutton.NoRealmsButton;
 import java.util.List;
 
 //~ if >=1.21.11 'ResourceLocation' -> 'Identifier'
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class FabricClientEntrypoint implements ClientModInitializer {
     //~ if >=1.21 '(' -> '.fromNamespaceAndPath('
     //~ if >=1.21 '= new ' -> '= '
     //~ if >=26.1 'ResourceLocation' -> 'Identifier'
-    public static final Identifier REALMS_REMOVE_PHASE = Identifier.fromNamespaceAndPath(NoRealmsButton.MOD_ID, "realms_remove");
+    public static final ResourceLocation REALMS_REMOVE_PHASE = new ResourceLocation(NoRealmsButton.MOD_ID, "realms_remove");
 
     @Override
     public void onInitializeClient() {
@@ -29,7 +29,7 @@ public class FabricClientEntrypoint implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register(REALMS_REMOVE_PHASE, (minecraft, s, scaledWidth, scaledHeight) -> {
             if (!(s instanceof TitleScreen)) return;
             //~ if >=26.1 'getButtons' -> 'getWidgets'
-            List<AbstractWidget> buttons = Screens.getWidgets(s);
+            List<AbstractWidget> buttons = Screens.getButtons(s);
             NoRealmsButton.adjustTitleScreen(buttons, buttons::remove, true);
         });
     }

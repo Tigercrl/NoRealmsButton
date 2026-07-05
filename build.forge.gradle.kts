@@ -3,38 +3,25 @@ plugins {
     id("me.modmuss50.mod-publish-plugin")
 }
 
+val modId = property("mod.id") as String
 val modVersion = property("mod.version") as String
 val minVersion = property("deps.minecraft.minVersion") as String
 val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as String?
 val supportedVersions = listOf(minVersion, modVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
-tasks.named<ProcessResources>("processResources") {
-    fun prop(name: String) = project.property(name) as String
-
-    val props = HashMap<String, String>().apply {
-        this["id"] = prop("mod.id")
-        this["name"] = prop("mod.name")
-        this["version"] = modVersion
-        this["minecraft_min_version"] = minVersion
-    }
-
-    filesMatching(listOf("META-INF/mods.toml")) {
-        expand(props)
-    }
-}
-
 version = "$modVersion+$minVersion-forge"
-base.archivesName = property("mod.id") as String
+base.archivesName = modId
 
 repositories {
     maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
 }
 
 dependencies {
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.4")!!)
 
-    implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.4")!!)
+    annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
 }
 
 legacyForge {
@@ -59,7 +46,7 @@ legacyForge {
     }
 
     mods {
-        register(property("mod.id") as String) {
+        register(modId) {
             sourceSet(sourceSets["main"])
         }
     }
@@ -67,12 +54,37 @@ legacyForge {
 }
 
 mixin {
-//    add(sourceSets.main.get(), "${property("mod.id")}-refmap.json")
-    config("${property("mod.id")}.mixins.json")
+    add(sourceSets.main.get(), "$modId-refmap.json")
+    config("$modId.mixins.json")
 }
 
 tasks {
     processResources {
+        fun prop(name: String) = project.property(name) as String
+
+        val props = HashMap<String, String>().apply {
+            this["id"] = modId
+            this["name"] = prop("mod.name")
+            this["version"] = modVersion
+            this["minecraft_min_version"] = minVersion
+        }
+
+        filesMatching(listOf("META-INF/mods.toml")) {
+            expand(props)
+        }
+
+        doLast {
+            val mixinsFile = destinationDir.resolve("$modId.mixins.json")
+            if (!mixinsFile.exists()) return@doLast
+
+            val slurper = groovy.json.JsonSlurper()
+            val json = slurper.parse(mixinsFile) as MutableMap<String, Any?>
+            json["refmap"] = "$modId-refmap.json"
+
+            val builder = groovy.json.JsonBuilder(json)
+            mixinsFile.writeText(builder.toPrettyString())
+        }
+
         exclude("**/fabric.mod.json", "**/*.accesswidener", "**/neoforge.mods.toml")
     }
 
@@ -85,6 +97,10 @@ tasks {
         from(jar.map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
+    }
+
+    jar {
+        manifest.attributes["MixinConfigs"] = "$modId.mixins.json"
     }
 }
 

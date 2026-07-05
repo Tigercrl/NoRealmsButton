@@ -9,21 +9,6 @@ val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as
 val supportedVersions = listOf(minVersion, modVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
-tasks.named<ProcessResources>("processResources") {
-    fun prop(name: String) = project.property(name) as String
-
-    val props = HashMap<String, String>().apply {
-        this["id"] = prop("mod.id")
-        this["name"] = prop("mod.name")
-        this["version"] = modVersion
-        this["minecraft_min_version"] = minVersion
-    }
-
-    filesMatching(listOf("fabric.mod.json")) {
-        expand(props)
-    }
-}
-
 version = "$modVersion+$minVersion-fabric"
 base.archivesName = property("mod.id") as String
 
@@ -53,6 +38,21 @@ fabricApi {
 
 tasks {
     processResources {
+        dependsOn("stonecutterGenerate")
+
+        fun prop(name: String) = project.property(name) as String
+
+        val props = HashMap<String, String>().apply {
+            this["id"] = prop("mod.id")
+            this["name"] = prop("mod.name")
+            this["version"] = modVersion
+            this["minecraft_min_version"] = minVersion
+        }
+
+        filesMatching(listOf("fabric.mod.json")) {
+            expand(props)
+        }
+
         exclude("**/neoforge.mods.toml", "**/mods.toml", "**/accesstransformer.cfg", "**/pack.mcmeta")
     }
 
