@@ -7,7 +7,8 @@ val modId = property("mod.id") as String
 val modVersion = property("mod.version") as String
 val mcVersion = property("deps.minecraft") as String
 val minVersion = property("deps.minecraft.minVersion") as String
-val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as String?
+val additionalVersionsStr =
+    (findProperty("deps.minecraft.additionalVersions") as String?)?.takeIf { it != "[VERSIONED]" }
 val supportedVersions = setOf(minVersion, mcVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
@@ -19,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4")!!)
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.4")!!)
 
     annotationProcessor("org.spongepowered:mixin:0.8.7:processor")

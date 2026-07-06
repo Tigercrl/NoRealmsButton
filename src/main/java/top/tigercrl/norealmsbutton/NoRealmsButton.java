@@ -16,9 +16,9 @@ public class NoRealmsButton {
         Button realmsButton = null;
         for (GuiEventListener w : widgets) {
             if (w instanceof Button button) {
-                //~ if >=1.20 '.y' -> '.getY()'
+                //~ if >=1.19.3 '.y' -> '.getY()'
                 if (moveUp && realmsButton != null && button.getY() >= realmsButton.getY() && !(button instanceof PlainTextButton) && button.visible) {
-                    //? if >=1.20 {
+                    //? if >=1.19.3 {
                     button.setY(button.getY() - 24);
                     //? } else
                     //button.y -= 24;

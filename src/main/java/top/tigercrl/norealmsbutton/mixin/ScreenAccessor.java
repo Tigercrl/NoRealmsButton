@@ -1,6 +1,6 @@
 package top.tigercrl.norealmsbutton.mixin;
 
-//~ if >=1.20 'Widget' -> 'Renderable'
+//~ if >=1.19.3 'Widget' -> 'Renderable'
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -13,7 +13,7 @@ import java.util.List;
 @Mixin(Screen.class)
 public interface ScreenAccessor {
     @Accessor("renderables")
-    //~ if >=1.20 '<Widget>' -> '<Renderable>'
+    //~ if >=1.19.3 '<Widget>' -> '<Renderable>'
     List<Renderable> getRenderables();
 
     @Accessor("children")

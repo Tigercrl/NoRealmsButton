@@ -1,2 +1,1 @@
-- Port to 1.18.x & 1.19.x
-- Fix not working on forge
+- Fix crashes on 1.19.3/4, 1.21.x & 26.x

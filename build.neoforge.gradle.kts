@@ -6,7 +6,8 @@ plugins {
 val modVersion = property("mod.version") as String
 val mcVersion = property("deps.minecraft") as String
 val minVersion = property("deps.minecraft.minVersion") as String
-val additionalVersionsStr = findProperty("deps.minecraft.additionalVersions") as String?
+val additionalVersionsStr =
+    (findProperty("deps.minecraft.additionalVersions") as String?)?.takeIf { it != "[VERSIONED]" }
 val supportedVersions = setOf(minVersion, mcVersion) +
         (additionalVersionsStr?.split(',')?.map { it.trim() } ?: emptyList())
 
