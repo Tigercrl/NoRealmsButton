@@ -48,6 +48,7 @@ neoForge {
             sourceSet(sourceSets["main"])
         }
     }
+
     sourceSets["main"].resources.srcDir("src/main/generated")
 }
 
@@ -98,7 +99,7 @@ java {
 
 publishMods {
     file = tasks.jar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
+    additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
 
     type = STABLE
     displayName = "[NeoForge] ${property("mod.name")} $modVersion"

@@ -53,11 +53,15 @@ legacyForge {
             sourceSet(sourceSets["main"])
         }
     }
+
     sourceSets["main"].resources.srcDir("src/main/generated")
 }
 
 mixin {
-    add(sourceSets.main.get(), "$modId-refmap.json")
+    val refmap = add(sourceSets.main.get(), "$modId.refmap.json")
+    tasks.named<Jar>("jar").configure {
+        from(refmap)
+    }
     config("$modId.mixins.json")
 }
 
@@ -124,7 +128,7 @@ java {
 
 publishMods {
     file = tasks.jar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
+    additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
 
     type = STABLE
     displayName = "[Forge] ${property("mod.name")} $modVersion"

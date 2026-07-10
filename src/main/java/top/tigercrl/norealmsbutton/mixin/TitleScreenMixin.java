@@ -1,21 +1,15 @@
 package top.tigercrl.norealmsbutton.mixin;
 
 import net.minecraft.client.gui.screens.TitleScreen;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//? >=1.19 {
-import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
-//? } else
-//import net.minecraft.client.gui.screens.Screen;
-
-//? forge || neoforge
-//import top.tigercrl.norealmsbutton.NoRealmsButton;
+//? forge || neoforge {
+/*import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.tigercrl.norealmsbutton.NoRealmsButton;
+*///? }
 //? forge {
 /*import net.minecraft.client.gui.components.Button;
 //~ if >=1.19 'TranslatableComponent' -> 'Component'
@@ -25,17 +19,6 @@ import net.minecraft.network.chat.Component;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin {
-    @Shadow
-    @Nullable
-    //~ if >=1.19 'Screen ' -> 'RealmsNotificationsScreen '
-    private RealmsNotificationsScreen realmsNotificationsScreen;
-
-    // remove realms screen
-    @Inject(method = "init", at = @At("TAIL"))
-    public void removeRealmsScreen(CallbackInfo ci) {
-        realmsNotificationsScreen = null;
-    }
-
     // remove realms notifications
     @Inject(method = "realmsNotificationsEnabled", at = @At("RETURN"), cancellable = true)
     public void realmsNotificationsEnabled(CallbackInfoReturnable<Boolean> cir) {

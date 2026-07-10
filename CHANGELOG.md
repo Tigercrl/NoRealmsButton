@@ -1,1 +1,1 @@
-- Fix crashes on 1.19.3/4, 1.21.x & 26.x
+- Fix crashes on forge
