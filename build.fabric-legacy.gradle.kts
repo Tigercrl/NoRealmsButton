@@ -60,7 +60,7 @@ tasks {
             expand(props)
         }
 
-        exclude("**/neoforge.mods.toml", "**/mods.toml", "**/accesstransformer.cfg", "**/pack.mcmeta")
+        exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml", "META-INF/accesstransformer.cfg", "pack.mcmeta")
     }
 
     register<Copy>("buildAndCollect") {

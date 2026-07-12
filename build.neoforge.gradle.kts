@@ -67,7 +67,7 @@ tasks {
             expand(props)
         }
 
-        exclude("**/fabric.mod.json", "**/*.accesswidener", "**/mods.toml", "**/pack.mcmeta")
+        exclude("fabric.mod.json", "*.accesswidener", "META-INF/mods.toml", "pack.mcmeta")
     }
 
     named("createMinecraftArtifacts") {

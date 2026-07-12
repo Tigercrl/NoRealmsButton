@@ -58,10 +58,7 @@ legacyForge {
 }
 
 mixin {
-    val refmap = add(sourceSets.main.get(), "$modId.refmap.json")
-    tasks.named<Jar>("jar").configure {
-        from(refmap)
-    }
+    add(sourceSets.main.get(), "$modId.refmap.json")
     config("$modId.mixins.json")
 }
 
@@ -86,13 +83,13 @@ tasks {
 
             val slurper = groovy.json.JsonSlurper()
             val json = slurper.parse(mixinsFile) as MutableMap<String, Any?>
-            json["refmap"] = "$modId-refmap.json"
+            json["refmap"] = "$modId.refmap.json"
 
             val builder = groovy.json.JsonBuilder(json)
             mixinsFile.writeText(builder.toPrettyString())
         }
 
-        exclude("**/fabric.mod.json", "**/*.accesswidener", "**/neoforge.mods.toml")
+        exclude("fabric.mod.json", "*.accesswidener", "META-INF/neoforge.mods.toml")
     }
 
     named("createMinecraftArtifacts") {
@@ -101,7 +98,7 @@ tasks {
 
     register<Copy>("buildAndCollect") {
         group = "build"
-        from(jar.map { it.archiveFile })
+        from(named<Jar>("reobfJar").map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
     }
@@ -127,7 +124,7 @@ java {
 }
 
 publishMods {
-    file = tasks.jar.map { it.archiveFile.get() }
+    file = tasks.named<Jar>("reobfJar").map { it.archiveFile.get() }
     additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
 
     type = STABLE

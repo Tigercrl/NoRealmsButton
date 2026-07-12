@@ -1,1 +1,2 @@
 - Fix crashes on forge
+- Use NeoForge instead of Forge in 1.20.6
